@@ -6,8 +6,8 @@ use utf8;
 use BerkeleyDB;
 
 sub main {
-
-    my $filename = "a.db"; 
+    my ($filename, $key) = @_;
+    #my $filename = ".db"; 
 
     my $db = new BerkeleyDB::Btree
                 -Filename => $filename,
@@ -16,7 +16,7 @@ sub main {
 
 
 
-    my ($k, $v) = ("ok", "") ;
+    my ($k, $v) = ($key, "") ;
     #my $rc = $db->db_get($k, $v );
     my $cursor = $db->db_cursor() ;
     my $rc = $cursor->c_get($k, $v, DB_SET_RANGE);
@@ -34,4 +34,15 @@ sub main {
 
 }
 
-main();
+
+
+
+my $num_args = $#ARGV + 1;
+
+if ($num_args != 2) {
+  print "\nUsage: test.pl <dbfilename> <code>\n";
+  exit;
+}
+
+
+main($ARGV[0], $ARGV[1]);
