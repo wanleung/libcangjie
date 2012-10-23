@@ -29,3 +29,5 @@ stamp-h1
 .deps
 depcomp
 bin
+data
+__db.*
