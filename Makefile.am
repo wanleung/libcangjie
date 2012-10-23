@@ -1,6 +1,14 @@
 # Point to our macro directory and pick up user flags from the environment
 ACLOCAL_AMFLAGS  = -I m4 ${ACLOCAL_FLAGS}
 
+# -- bin/ ----------------------------
+bin_PROGRAMS = \
+	bin/libcangjie_dbbuilder \
+	$(NULL)
+bin_libcangjie_dbbuilder_SOURCES = \
+	tools/dbbuilder.cpp \
+	$(NULL)
+bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS)
 
 # -- data/ ---------------------------
 libcangjie_data_DATA = \
@@ -39,6 +47,5 @@ EXTRA_DIST = \
 	tables/cj5-70000.txt \
 	tables/cj5-8300.txt \
 	tables/LICENSE \
-	tools/parser.cpp \
 	tools/test.pl \
 	$(NULL)
