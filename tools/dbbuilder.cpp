@@ -70,7 +70,7 @@ int main(int argc, const char* argv[]) {
             string cjdata = line.substr(index, (line.size()-index));
             cout << cjkey << "---" << cjdata << endl;
             Dbt key(const_cast<char*>(cjkey.data()), cjkey.size());
-            Dbt value(const_cast<char*>(cjdata.data()), cjdata.size()+1);
+            Dbt value(const_cast<char*>(cjdata.data()), cjdata.size());
             pdb->put(NULL, &key, &value, 0);
         }
         myfile.close();
