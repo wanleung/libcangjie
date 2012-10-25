@@ -60,10 +60,8 @@ int main(int argc, const char* argv[]) {
             }
             //cout << (int)line[8]  << endl;
             int index = 0;
-            while (index < 5) {
-                if (32 == (char)line[index++]) {
-                    break;
-                }
+            while (32 != (char)line[index]) {
+                index++;
             }
             string cjkey = line.substr(0, index-1);
             while (32 == line[index]) {
