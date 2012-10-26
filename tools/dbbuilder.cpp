@@ -60,10 +60,8 @@ int main(int argc, const char* argv[]) {
             }
             //cout << (int)line[8]  << endl;
             int index = 0;
-            while (index < 5) {
-                if (32 == (char)line[index++]) {
-                    break;
-                }
+            while (32 != (char)line[index]) {
+                index++;
             }
             string cjkey = line.substr(0, index-1);
             while (32 == line[index]) {
@@ -72,7 +70,7 @@ int main(int argc, const char* argv[]) {
             string cjdata = line.substr(index, (line.size()-index));
             cout << cjkey << "---" << cjdata << endl;
             Dbt key(const_cast<char*>(cjkey.data()), cjkey.size());
-            Dbt value(const_cast<char*>(cjdata.data()), cjdata.size()+1);
+            Dbt value(const_cast<char*>(cjdata.data()), cjdata.size());
             pdb->put(NULL, &key, &value, 0);
         }
         myfile.close();
