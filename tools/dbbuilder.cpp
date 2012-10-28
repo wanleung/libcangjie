@@ -63,7 +63,7 @@ int main(int argc, const char* argv[]) {
             while (32 != (char)line[index]) {
                 index++;
             }
-            string cjkey = line.substr(0, index-1);
+            string cjkey = line.substr(0, index);
             while (32 == line[index]) {
                 index++;
             }
