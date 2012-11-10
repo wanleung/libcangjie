@@ -23,6 +23,11 @@ cangjie_include_HEADERS = \
 cangjie_includedir = $(includedir)/cangjie-@CANGJIE_API_VERSION@
 
 # -- data/ ---------------------------
+pkgconfig_DATA = \
+	data/cangjie-$(CANGJIE_API_VERSION).pc \
+	$(NULL)
+pkgconfigdir = $(libdir)/pkgconfig
+
 data/cj3-cc.mb: bin/libcangjie_dbbuilder tables/cj3-20902.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
@@ -71,6 +76,7 @@ libcangjie_datadir = $(pkgdatadir)
 CLEANFILES = \
 	__db.* \
 	data/*.mb \
+	data/*.pc \
 	$(NULL)
 
 EXTRA_DIST = \
