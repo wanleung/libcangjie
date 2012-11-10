@@ -24,7 +24,8 @@ config.log
 config.status
 config.sub
 configure
-data
+data/*.mb
+data/*.pc
 depcomp
 install-sh
 libtool

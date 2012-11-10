@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([libcangjie], [0.0.1], [https://github.com/wanleung/libcangjie/issues], [libcangjie])
+AC_INIT([libcangjie], [0.0.1], [https://github.com/wanleung/libcangjie/issues], [libcangjie], [https://github.com/wanleung/libcangjie])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -36,6 +36,7 @@ AC_LANG_POP([C++])
 # OUTPUT files
 AC_CONFIG_FILES([
   Makefile
+  data/cangjie.pc:data/cangjie.pc.in
 ])
 
 AC_OUTPUT
