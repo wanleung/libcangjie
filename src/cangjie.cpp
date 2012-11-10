@@ -29,8 +29,8 @@ string CANGJIE_ALL_CJK_DB("cjk.mb");
 string CANGJIE_DATA_PATH("./data/");
 
 CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) : 
-    cangjie_flags_(flags),
-    cangjie_version_(version)
+    cangjie_version_(version),
+    cangjie_flags_(flags)
 {
     string db_filename("");
     try {
