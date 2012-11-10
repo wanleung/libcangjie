@@ -10,6 +10,18 @@ bin_libcangjie_dbbuilder_SOURCES = \
 	$(NULL)
 bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS)
 
+# -- src/ ----------------------------
+lib_LTLIBRARIES = libcangjie_@CANGJIE_API_VERSION@.la
+libcangjie_@CANGJIE_API_VERSION@_la_SOURCES = \
+	src/cangjie.cpp \
+	$(NULL)
+libcangjie_@CANGJIE_API_VERSION@_la_LDFLAGS = -version-info $(CANGJIE_SO_VERSION)
+
+cangjie_include_HEADERS = \
+	src/cangjie.h \
+	$(NULL)
+cangjie_includedir = $(includedir)/cangjie-@CANGJIE_API_VERSION@
+
 # -- data/ ---------------------------
 data/cj3-cc.mb: bin/libcangjie_dbbuilder tables/cj3-20902.txt
 	$(MKDIR_P) data
