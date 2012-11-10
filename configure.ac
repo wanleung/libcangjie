@@ -4,9 +4,6 @@ AC_INIT([libcangjie], [0.0.1], [https://github.com/wanleung/libcangjie], [libcan
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_SUBST([PACKAGE_NAME], ["$PACKAGE_NAME"])
-AC_SUBST([PACKAGE_VERSION], ["$PACKAGE_VERSION"])
-
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar foreign])
 AC_PROG_MKDIR_P
 
