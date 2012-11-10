@@ -13,6 +13,15 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_PROG_CXX
 AC_LANG_PUSH([C++])
 
+# Initialize libtool
+LT_INIT([disable-static])
+
+# Define these substitions here to keep all version information in one place.
+# For information on how to properly maintain the library version information,
+# refer to the libtool manual, section "Updating library version information":
+# http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+AC_SUBST([CANGJIE_SO_VERSION], [0:0:0])
+
 # Check for Berkeley DB
 AC_CHECK_HEADERS(db_cxx.h,HAVE_DBCXX="yes",HAVE_DBCXX="no")
 if test "$HAVE_DBCXX" = no
