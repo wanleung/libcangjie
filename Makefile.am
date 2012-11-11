@@ -15,6 +15,7 @@ lib_LTLIBRARIES = libcangjie.la
 libcangjie_la_SOURCES = \
 	src/cangjie.cpp \
 	$(NULL)
+libcangjie_la_CXXFLAGS = -I./src
 libcangjie_la_LDFLAGS = -version-info $(CANGJIE_SO_VERSION)
 libcangjie_la_LIBADD = $(DBCXX_LIBS)
 
@@ -22,6 +23,10 @@ libcangjie_la_include_HEADERS = \
 	src/cangjie.h \
 	$(NULL)
 libcangjie_la_includedir = $(includedir)/cangjie
+
+src/cangjieconfig.h: src/cangjieconfig.h.in Makefile
+	$(MKDIR_P) src
+	sed -e 's&@PKGDATADIR@&$(pkgdatadir)&g' $< > $@
 
 # -- data/ ---------------------------
 pkgconfig_DATA = \
@@ -74,15 +79,21 @@ libcangjie_data_DATA = \
 libcangjie_datadir = $(pkgdatadir)
 
 # -- Common --------------------------
+BUILT_SOURCES = \
+	src/cangjieconfig.h \
+	$(NULL)
+
 CLEANFILES = \
 	__db.* \
 	data/*.mb \
 	data/*.pc \
+	src/cangjieconfig.h \
 	$(NULL)
 
 EXTRA_DIST = \
 	autogen.sh \
 	README.md \
+	src/cangjieconfig.h.in \
 	tables/cj3-13053.txt \
 	tables/cj3-20902.txt \
 	tables/cj3-6763.txt \

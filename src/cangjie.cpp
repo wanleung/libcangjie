@@ -18,6 +18,7 @@
  */
 
 #include "cangjie.h"
+#include "cangjieconfig.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     cangjie_version_(version),
     cangjie_flags_(flags)
 {
-    string db_filename("");
+    string db_filename(CANGJIE_DATA_DIR);
     try {
 
         cangjie_env_ = new DbEnv(0);
