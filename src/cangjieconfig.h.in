@@ -1,0 +1,1 @@
+#define CANGJIE_DATA_DIR "@PKGDATADIR@/"
