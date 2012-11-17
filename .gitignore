@@ -32,6 +32,7 @@ libtool
 ltmain.sh
 m4
 missing
+src/cangjieconfig.h
 stamp-h1
 .deps
 .libs
