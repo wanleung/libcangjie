@@ -144,6 +144,13 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
   return result;
 }
 
+bool CangJie::isCangJieInputKey(char c) {
+    if (c >= 'a' && c <='z') {
+        return true;
+    }
+    return false;
+}
+
 /* this function is a workaround for the BerkelegyDB Dbt::get_data() problem
  * Dbt::get_data() returns garbage bytes at the end of UTF-8 result data
  * Dbt::get_size() shows the right data size of the result

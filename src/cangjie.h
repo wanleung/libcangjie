@@ -39,6 +39,8 @@ class CangJie {
         CangJie (CangJie_Version_Type version, uint32_t flags);
         ~CangJie() { close(); }
         std::vector<std::string> getCharacters (std::string code);
+        bool isCangJieInputKey (char c);
+        //char CangJie::get_full_width_version(char)
 
     private:
         DbEnv *cangjie_env_;
