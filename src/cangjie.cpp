@@ -1,4 +1,24 @@
+/*
+ * Copyright (C) 2012  Wan Leung Wong <wanleung at linkomnia dot com>
+ *
+ * This file is part of libcangjie.
+ *
+ * libcangjie is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libcangjie is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libcangjie.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "cangjie.h"
+#include "cangjieconfig.h"
 
 using namespace std;
 
@@ -10,10 +30,10 @@ string CANGJIE_ALL_CJK_DB("cjk.mb");
 string CANGJIE_DATA_PATH("./data/");
 
 CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) : 
-    cangjie_flags_(flags),
-    cangjie_version_(version)
+    cangjie_version_(version),
+    cangjie_flags_(flags)
 {
-    string db_filename("");
+    string db_filename(CANGJIE_DATA_DIR);
     try {
 
         cangjie_env_ = new DbEnv(0);
