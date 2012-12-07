@@ -21,9 +21,6 @@
 #include <vector>
 #include <db_cxx.h>
 
-#define CANGJIE_3 
-
-
 #define CANGJIE_SIMPLIFIED    0x00000001
 #define CANGJIE_TRADITIONAL   0x00000010
 #define CANGJIE_COMMON        0x00000011
