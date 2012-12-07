@@ -29,7 +29,7 @@ string CANGJIE_ALL_CJK_DB("cjk.mb");
 
 string CANGJIE_DATA_PATH("./data/");
 
-CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) : 
+CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     cangjie_version_(version),
     cangjie_flags_(flags),
     isEnglishMode_(false),
@@ -69,7 +69,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
                 break;
             }
 
-        } 
+        }
 
         cangjie_db_ = new Db(cangjie_env_, 0);
         cangjie_db_->set_error_stream(&std::cerr);
@@ -115,7 +115,7 @@ void CangJie::close()
         std::cerr << "Error closing database: " << "" << "\n";
         std::cerr << e.what() << std::endl;
     }
-} 
+}
 
 
 std::vector<std::string> CangJie::getCharacters (std::string code) {

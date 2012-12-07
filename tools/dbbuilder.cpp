@@ -69,7 +69,7 @@ int main(int argc, const char* argv[]) {
         while ( myfile.good() ) {
             //if (count++ > 10) {
             //    break;
-            //} 
+            //}
             getline (myfile,line);
             if (!datamode) {
                 if ("[DATA]" == line ) {
@@ -93,8 +93,8 @@ int main(int argc, const char* argv[]) {
             pdb->put(NULL, &key, &value, 0);
         }
         myfile.close();
-    } else { 
-        cout << "Unable to open file";  
+    } else {
+        cout << "Unable to open file";
     }
 
 
