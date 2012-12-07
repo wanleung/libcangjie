@@ -128,7 +128,7 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
 
     int ret = cursor->get(&key, &data, DB_SET);
     while (ret != DB_NOTFOUND) {
-        result.push_back(string((char *)data.get_data()));
+        result.push_back(string((char *)data.get_data(), data.get_size()));
         //std::cout << " key: " << (char *)key.get_data() 
         //          << " data: " << (char *)data.get_data()<< std::endl;
         ret = cursor->get(&key, &data, DB_NEXT_DUP);
