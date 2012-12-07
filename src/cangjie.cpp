@@ -128,9 +128,7 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
 
     int ret = cursor->get(&key, &data, DB_SET);
     while (ret != DB_NOTFOUND) {
-        //std::cout << data.get_size() << std::endl;
-        //std::cout << strlen((char *)data.get_data()) << std::endl;
-        result.push_back(string(discardCharacterGarbageByte((char *)data.get_data(), data.get_size())));
+        result.push_back(string((char *)data.get_data()));
         //std::cout << " key: " << (char *)key.get_data() 
         //          << " data: " << (char *)data.get_data()<< std::endl;
         ret = cursor->get(&key, &data, DB_NEXT_DUP);
@@ -149,15 +147,4 @@ bool CangJie::isCangJieInputKey(char c) {
         return true;
     }
     return false;
-}
-
-/* this function is a workaround for the BerkelegyDB Dbt::get_data() problem
- * Dbt::get_data() returns garbage bytes at the end of UTF-8 result data
- * Dbt::get_size() shows the right data size of the result
- */
-char* CangJie::discardCharacterGarbageByte (char* char_data, int size) {
-	if (strlen(char_data) > size)
-		*(char_data + size) = '\0';
-	
-	return char_data;
 }
