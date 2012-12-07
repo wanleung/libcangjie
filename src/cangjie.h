@@ -40,6 +40,10 @@ class CangJie {
         ~CangJie() { close(); }
         std::vector<std::string> getCharacters (std::string code);
         bool isCangJieInputKey (char c);
+        void setFullWidthModeEnable(bool enable);
+        bool isFullWidthMode();
+        void setEnglishModeEnable(bool enable);
+        bool isEnglishMode();
         //char CangJie::get_full_width_version(char)
 
     private:
@@ -48,6 +52,9 @@ class CangJie {
         //Dbc *cursor;
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
+        bool isFullWidthMode_;
+        bool isEnglishMode_;
+
         CangJie() : cangjie_env_(0) {}
         void close();
 };

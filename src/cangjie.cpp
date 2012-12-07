@@ -31,7 +31,9 @@ string CANGJIE_DATA_PATH("./data/");
 
 CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) : 
     cangjie_version_(version),
-    cangjie_flags_(flags)
+    cangjie_flags_(flags),
+    isEnglishMode_(false),
+    isFullWidthMode_(false)
 {
     string db_filename(CANGJIE_DATA_DIR);
     try {
@@ -148,3 +150,20 @@ bool CangJie::isCangJieInputKey(char c) {
     }
     return false;
 }
+
+void CangJie::setFullWidthModeEnable(bool enable) {
+    isFullWidthMode_ = enable;
+}
+
+bool CangJie::isFullWidthMode() {
+    return isFullWidthMode_;
+}
+
+void CangJie::setEnglishModeEnable(bool enable) {
+    isEnglishMode_ = enable;
+}
+
+bool CangJie::isEnglishMode() {
+    return isEnglishMode_;
+}
+
