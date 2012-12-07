@@ -76,7 +76,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
         uint32_t db_flags = DB_TRUNCATE;
         cangjie_db_->set_flags( DB_DUP );// | DB_DUPSORT);
-        //cout << db_filename << endl;
+
         // Open the database
         cangjie_db_->open(NULL, db_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
     }
@@ -101,8 +101,6 @@ void CangJie::close()
     try
     {
         cangjie_db_->close(0);
-        //std::cout << "Database " << ""
-        //          << " is closed." << std::endl;
         delete cangjie_db_;
         cangjie_env_->close(0);
         delete cangjie_env_;
@@ -131,8 +129,6 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
         int ret = cursor->get(&key, &data, DB_SET);
         while (ret != DB_NOTFOUND) {
             result.push_back(string((char *)data.get_data(), data.get_size()));
-            //std::cout << " key: " << (char *)key.get_data() 
-            //          << " data: " << (char *)data.get_data()<< std::endl;
             ret = cursor->get(&key, &data, DB_NEXT_DUP);
         }
 
