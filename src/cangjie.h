@@ -50,6 +50,5 @@ class CangJie {
         uint32_t cangjie_flags_;
         CangJie() : cangjie_env_(0) {}
         void close();
-        char* discardCharacterGarbageByte (char* char_data, int size);
 };
 
