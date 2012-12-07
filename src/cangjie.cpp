@@ -121,27 +121,27 @@ void CangJie::close()
 
 
 std::vector<std::string> CangJie::getCharacters (std::string code) {
-  vector<string> result;
-  try {
-    Dbc *cursor;
-    cangjie_db_->cursor(NULL, &cursor, 0);
-    Dbt key(const_cast<char *>(code.c_str()), code.size());
-    Dbt data;
+    vector<string> result;
+    try {
+        Dbc *cursor;
+        cangjie_db_->cursor(NULL, &cursor, 0);
+        Dbt key(const_cast<char *>(code.c_str()), code.size());
+        Dbt data;
 
-    int ret = cursor->get(&key, &data, DB_SET);
-    while (ret != DB_NOTFOUND) {
-        result.push_back(string((char *)data.get_data(), data.get_size()));
-        //std::cout << " key: " << (char *)key.get_data() 
-        //          << " data: " << (char *)data.get_data()<< std::endl;
-        ret = cursor->get(&key, &data, DB_NEXT_DUP);
+        int ret = cursor->get(&key, &data, DB_SET);
+        while (ret != DB_NOTFOUND) {
+            result.push_back(string((char *)data.get_data(), data.get_size()));
+            //std::cout << " key: " << (char *)key.get_data() 
+            //          << " data: " << (char *)data.get_data()<< std::endl;
+            ret = cursor->get(&key, &data, DB_NEXT_DUP);
+        }
+
+    } catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
     }
-
-  } catch (DbException& e) {
-    cerr << "DbException: " << e.what() << endl;
-  } catch (std::exception& e) {
-    cerr << e.what() << endl;
-  }
-  return result;
+    return result;
 }
 
 bool CangJie::isCangJieInputKey(char c) {
