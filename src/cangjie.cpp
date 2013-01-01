@@ -120,6 +120,14 @@ void CangJie::close()
 
 std::vector<std::string> CangJie::getCharacters (std::string code) {
     vector<string> result;
+
+    // If the input code has a wildcard, call the dedicated function
+    int pos = code.find("*");
+    if (pos > 0) {
+        return this->getCharactersRange(code.substr(0, pos),
+                                        code.substr(pos+1));
+    }
+
     try {
         Dbc *cursor;
         cangjie_db_->cursor(NULL, &cursor, 0);
@@ -132,6 +140,34 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
             ret = cursor->get(&key, &data, DB_NEXT_DUP);
         }
 
+    } catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
+    }
+    return result;
+}
+
+std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::string ending) {
+    vector<string> result;
+
+    try {
+        Dbc *cursor;
+        cangjie_db_->cursor(NULL, &cursor, 0);
+
+        Dbt key(const_cast<char *>(begin.c_str()), begin.size());
+        Dbt data;
+        string s_key;
+
+        int ret = cursor->get(&key, &data, DB_SET_RANGE);
+        s_key = string((char *)key.get_data(), key.get_size());
+        while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
+            if (endswith(s_key, ending)) {
+                result.push_back(string((char *)data.get_data(), data.get_size()));
+            }
+            ret = cursor->get(&key, &data, DB_NEXT);
+            s_key = string((char *)key.get_data(), key.get_size());
+        }
     } catch (DbException& e) {
         cerr << "DbException: " << e.what() << endl;
     } catch (std::exception& e) {
