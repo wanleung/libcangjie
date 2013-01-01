@@ -124,8 +124,15 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
     // If the input code has a wildcard, call the dedicated function
     int pos = code.find("*");
     if (pos > 0) {
-        return this->getCharactersRange(code.substr(0, pos),
-                                        code.substr(pos+1));
+        string begin = code.substr(0, pos);
+        string end = code.substr(pos+1);
+
+        // Make sure there actually is something to match
+        if ((begin.size() > 0) && (end.size() > 0)) {
+            return this->getCharactersRange(begin, end);
+        } else {
+            return result;
+        }
     }
 
     try {
