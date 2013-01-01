@@ -163,3 +163,18 @@ bool CangJie::isEnglishMode() {
     return isEnglishMode_;
 }
 
+/* These are some simple helper functions, used by the CangJie class above.
+ *
+ * They are not (and should not) be exposed as part as the public API.
+ */
+bool startswith(std::string s, std::string begin) {
+    return (s.find(begin) == 0);
+}
+
+bool endswith(std::string s, std::string ending) {
+    if (s.length() >= ending.length()) {
+        return (s.compare(s.length() - ending.length(), ending.length(), ending) == 0);
+    } else {
+        return false;
+    }
+}
