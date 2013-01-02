@@ -216,6 +216,10 @@ std::string CangJie::getFullWidthChar(char key) {
 
 std::string CangJie::translateInputKeyToCangJie(char key) {
     extern const char * inputcodemap[];
+    if (key == '*') {
+        extern const char * fullengchar[];
+        return string(fullengchar['*'-' ']);
+    }
     if (key < 'a' || key > 'z') {
         return NULL;
     }
