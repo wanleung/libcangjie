@@ -22,6 +22,25 @@
 
 using namespace std;
 
+
+/* These are some simple helper functions, used by the CangJie class below.
+ *
+ * They are not (and should not) be exposed as part as the public API.
+ */
+bool startswith(std::string s, std::string begin) {
+    return (s.find(begin) == 0);
+}
+
+bool endswith(std::string s, std::string ending) {
+    if (s.length() >= ending.length()) {
+        return (s.compare(s.length() - ending.length(), ending.length(), ending) == 0);
+    } else {
+        return false;
+    }
+}
+// End of the helper functions
+
+
 string CANGJIE_SIMPLIFIED_DB("sc.mb");
 string CANGJIE_TRADITIONAL_DB("tc.mb");
 string CANGJIE_COMMON_DB("cc.mb");
@@ -120,6 +139,21 @@ void CangJie::close()
 
 std::vector<std::string> CangJie::getCharacters (std::string code) {
     vector<string> result;
+
+    // If the input code has a wildcard, call the dedicated function
+    int pos = code.find("*");
+    if (pos > 0) {
+        string begin = code.substr(0, pos);
+        string end = code.substr(pos+1);
+
+        // Make sure there actually is something to match
+        if ((begin.size() > 0) && (end.size() > 0)) {
+            return this->getCharactersRange(begin, end);
+        } else {
+            return result;
+        }
+    }
+
     try {
         Dbc *cursor;
         cangjie_db_->cursor(NULL, &cursor, 0);
@@ -132,6 +166,34 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
             ret = cursor->get(&key, &data, DB_NEXT_DUP);
         }
 
+    } catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
+    }
+    return result;
+}
+
+std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::string ending) {
+    vector<string> result;
+
+    try {
+        Dbc *cursor;
+        cangjie_db_->cursor(NULL, &cursor, 0);
+
+        Dbt key(const_cast<char *>(begin.c_str()), begin.size());
+        Dbt data;
+        string s_key;
+
+        int ret = cursor->get(&key, &data, DB_SET_RANGE);
+        s_key = string((char *)key.get_data(), key.get_size());
+        while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
+            if (endswith(s_key, ending)) {
+                result.push_back(string((char *)data.get_data(), data.get_size()));
+            }
+            ret = cursor->get(&key, &data, DB_NEXT);
+            s_key = string((char *)key.get_data(), key.get_size());
+        }
     } catch (DbException& e) {
         cerr << "DbException: " << e.what() << endl;
     } catch (std::exception& e) {
@@ -162,4 +224,3 @@ void CangJie::setEnglishModeEnable(bool enable) {
 bool CangJie::isEnglishMode() {
     return isEnglishMode_;
 }
-
