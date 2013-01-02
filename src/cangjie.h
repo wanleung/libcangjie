@@ -37,11 +37,8 @@ class CangJie {
         ~CangJie() { close(); }
         std::vector<std::string> getCharacters (std::string code);
         bool isCangJieInputKey (char c);
-        void setFullWidthModeEnable(bool enable);
-        bool isFullWidthMode();
-        void setEnglishModeEnable(bool enable);
-        bool isEnglishMode();
-        //char CangJie::get_full_width_version(char)
+        std::string getFullWidthChar(char key);
+        std::string translateInputKeyToCangJie(char key);
 
     private:
         DbEnv *cangjie_env_;

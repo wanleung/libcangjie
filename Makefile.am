@@ -13,6 +13,7 @@ bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS)
 # -- src/ ----------------------------
 lib_LTLIBRARIES = libcangjie.la
 libcangjie_la_SOURCES = \
+	src/fullchar.cpp \
 	src/cangjie.cpp \
 	$(NULL)
 libcangjie_la_CXXFLAGS = -I./src

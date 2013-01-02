@@ -22,7 +22,6 @@
 
 using namespace std;
 
-
 /* These are some simple helper functions, used by the CangJie class below.
  *
  * They are not (and should not) be exposed as part as the public API.
@@ -50,9 +49,7 @@ string CANGJIE_DATA_PATH("./data/");
 
 CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     cangjie_version_(version),
-    cangjie_flags_(flags),
-    isEnglishMode_(false),
-    isFullWidthMode_(false)
+    cangjie_flags_(flags)
 {
     string db_filename(CANGJIE_DATA_DIR);
     try {
@@ -209,18 +206,18 @@ bool CangJie::isCangJieInputKey(char c) {
     return false;
 }
 
-void CangJie::setFullWidthModeEnable(bool enable) {
-    isFullWidthMode_ = enable;
+std::string CangJie::getFullWidthChar(char key) {
+    extern const char * fullengchar[];
+    if (key < ' ' || key > 127) {
+        return NULL;
+    }
+    return string(fullengchar[key-' ']);
 }
 
-bool CangJie::isFullWidthMode() {
-    return isFullWidthMode_;
-}
-
-void CangJie::setEnglishModeEnable(bool enable) {
-    isEnglishMode_ = enable;
-}
-
-bool CangJie::isEnglishMode() {
-    return isEnglishMode_;
+std::string CangJie::translateInputKeyToCangJie(char key) {
+    extern const char * inputcodemap[];
+    if (key < 'a' || key > 'z') {
+        return NULL;
+    }
+    return string(inputcodemap[key - 'a']);
 }
