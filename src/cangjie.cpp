@@ -19,6 +19,8 @@
 
 #include "cangjie.h"
 #include "cangjieconfig.h"
+#include <cstdlib>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -45,17 +47,25 @@ string CANGJIE_TRADITIONAL_DB("tc.mb");
 string CANGJIE_COMMON_DB("cc.mb");
 string CANGJIE_ALL_CJK_DB("cjk.mb");
 
-string CANGJIE_DATA_PATH("./data/");
 
 CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     cangjie_version_(version),
     cangjie_flags_(flags)
 {
+    string base_runtime_dir, cangjie_runtime_dir;
+    try {
+        base_runtime_dir = (std::string)getenv("XDG_RUNTIME_DIR");
+    } catch(std::exception &e) {
+        base_runtime_dir = "/tmp";
+    }
+    cangjie_runtime_dir = base_runtime_dir + "/libcangjie";
+    mkdir(cangjie_runtime_dir.c_str(), S_IRWXU);
+
     string db_filename(CANGJIE_DATA_DIR);
     try {
 
         cangjie_env_ = new DbEnv(0);
-        cangjie_env_->open(CANGJIE_DATA_PATH.c_str(), DB_CREATE | DB_INIT_MPOOL, 0);
+        cangjie_env_->open(cangjie_runtime_dir.c_str(), DB_CREATE | DB_INIT_MPOOL, 0);
 
         if (cangjie_version_ == CangJie_Version_Type_3 ) {
             db_filename += "cj3-";
