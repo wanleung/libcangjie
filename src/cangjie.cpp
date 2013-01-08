@@ -52,8 +52,13 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     cangjie_version_(version),
     cangjie_flags_(flags)
 {
-    string cangjie_runtime_dir(getenv("XDG_RUNTIME_DIR"));
-    cangjie_runtime_dir = cangjie_runtime_dir + "/libcangjie";
+    string base_runtime_dir, cangjie_runtime_dir;
+    try {
+        base_runtime_dir = (std::string)getenv("XDG_RUNTIME_DIR");
+    } catch(std::exception &e) {
+        base_runtime_dir = "/tmp";
+    }
+    cangjie_runtime_dir = base_runtime_dir + "/libcangjie";
     mkdir(cangjie_runtime_dir.c_str(), S_IRWXU);
 
     string db_filename(CANGJIE_DATA_DIR);
