@@ -46,9 +46,6 @@ class CangJie {
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
         std::vector<std::string> getCharactersRange (std::string begin, std::string ending);
-        bool isFullWidthMode_;
-        bool isEnglishMode_;
-
         CangJie() : cangjie_env_(0) {}
         void close();
 };
