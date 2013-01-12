@@ -16,6 +16,18 @@ usual sequence:
 Of course, if you got the sources from Git, you will need to run the
 `autogen.sh` script first.
 
+Dependencies
+============
+
+You will need the following to build this library:
+
+  - the C++ libdb bindings:
+      -> http://www.oracle.com/database/berkeley-db/
+
+  - a C++ compiler
+      We strongly recomment g++
+      -> http://gcc.gnu.org/
+
 Legal
 =====
 
