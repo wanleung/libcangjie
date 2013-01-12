@@ -21,6 +21,7 @@
 #include "cangjieconfig.h"
 #include <cstdlib>
 #include <sys/stat.h>
+#include <stdexcept>
 
 using namespace std;
 
@@ -219,7 +220,8 @@ bool CangJie::isCangJieInputKey(char c) {
 std::string CangJie::getFullWidthChar(char key) {
     extern const char * fullengchar[];
     if (key < ' ' || key > 127) {
-        return NULL;
+        std::string msg = std::string("No full-width version of '") + key + "' char";
+        throw std::invalid_argument(msg);
     }
     return string(fullengchar[key-' ']);
 }
