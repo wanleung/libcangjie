@@ -34,7 +34,7 @@ bool startswith(std::string s, std::string begin) {
 }
 
 bool endswith(std::string s, std::string ending) {
-    if (s.length() > ending.length()) {
+    if (s.length() >= ending.length()) {
         return (s.compare(s.length() - ending.length(), ending.length(), ending) == 0);
     } else {
         return false;
@@ -196,7 +196,7 @@ std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::st
         int ret = cursor->get(&key, &data, DB_SET_RANGE);
         s_key = string((char *)key.get_data(), key.get_size());
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
-            if (endswith(s_key, ending)) {
+            if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
                 result.push_back(string((char *)data.get_data(), data.get_size()));
             }
             ret = cursor->get(&key, &data, DB_NEXT);
