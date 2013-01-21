@@ -34,7 +34,7 @@ bool startswith(std::string s, std::string begin) {
 }
 
 bool endswith(std::string s, std::string ending) {
-    if (s.length() > ending.length()) {
+    if (s.length() >= ending.length()) {
         return (s.compare(s.length() - ending.length(), ending.length(), ending) == 0);
     } else {
         return false;
