@@ -103,7 +103,7 @@ EXTRA_DIST = \
 	tables/cj5-20902.txt \
 	tables/cj5-70000.txt \
 	tables/cj5-8300.txt \
-	tables/LICENSE \
+	tables/COPYING.tables \
 	tests/testdbs.pl \
 	$(NULL)
 
