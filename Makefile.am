@@ -6,7 +6,7 @@ bin_PROGRAMS = \
 	bin/libcangjie_dbbuilder \
 	$(NULL)
 bin_libcangjie_dbbuilder_SOURCES = \
-	tools/dbbuilder.cpp \
+	src/dbbuilder.cpp \
 	$(NULL)
 bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS)
 
