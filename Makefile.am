@@ -35,35 +35,7 @@ pkgconfig_DATA = \
 	$(NULL)
 pkgconfigdir = $(libdir)/pkgconfig
 
-data/cj3-cc.mb: bin/libcangjie_dbbuilder tables/cj3-20902.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj3-cjk.mb: bin/libcangjie_dbbuilder tables/cj3-70000.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj3-sc.mb: bin/libcangjie_dbbuilder tables/cj3-6763.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj3-tc.mb: bin/libcangjie_dbbuilder tables/cj3-13053.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj5-cc.mb: bin/libcangjie_dbbuilder tables/cj5-20902.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj5-cjk.mb: bin/libcangjie_dbbuilder tables/cj5-70000.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj5-sc.mb: bin/libcangjie_dbbuilder tables/cj5-8300.txt
-	$(MKDIR_P) data
-	$^ $@ >/dev/null
-
-data/cj5-tc.mb: bin/libcangjie_dbbuilder tables/cj5-13053.txt
+data/%.mb: bin/libcangjie_dbbuilder tables/%.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
@@ -95,14 +67,14 @@ EXTRA_DIST = \
 	autogen.sh \
 	README.md \
 	src/cangjieconfig.h.in \
-	tables/cj3-13053.txt \
-	tables/cj3-20902.txt \
-	tables/cj3-6763.txt \
-	tables/cj3-70000.txt \
-	tables/cj5-13053.txt \
-	tables/cj5-20902.txt \
-	tables/cj5-70000.txt \
-	tables/cj5-8300.txt \
+	tables/cj3-cc.txt \
+	tables/cj3-cjk.txt \
+	tables/cj3-sc.txt \
+	tables/cj3-tc.txt \
+	tables/cj5-cc.txt \
+	tables/cj5-cjk.txt \
+	tables/cj5-sc.txt \
+	tables/cj5-tc.txt \
 	tables/COPYING.tables \
 	tests/testdbs.pl \
 	$(NULL)
