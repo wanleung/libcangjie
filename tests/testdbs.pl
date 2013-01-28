@@ -58,6 +58,12 @@ sub main {
         # Strip whitespace
         $line=~s/^ +//;
         $line=~s/ +$//;
+        $line=~s/\n+$//;
+
+        # Ignore empty and commented lines
+        if (($line =~ /^#/) || ($line eq "")) {
+            next;
+        }
 
         if ($in_data) {
             $table_count = $table_count + 1;

@@ -8,7 +8,7 @@ bin_PROGRAMS = \
 bin_libcangjie_dbbuilder_SOURCES = \
 	src/dbbuilder.cpp \
 	$(NULL)
-bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS)
+bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS) libutil.la
 
 # -- src/ ----------------------------
 lib_LTLIBRARIES = libcangjie.la

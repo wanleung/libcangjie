@@ -24,6 +24,8 @@
 #include <db_cxx.h>
 #include <fstream>
 
+#include "util.h"
+
 using namespace std;
 
 
@@ -66,6 +68,12 @@ int main(int argc, const char* argv[]) {
     if (myfile.is_open()) {
         while ( myfile.good() ) {
             getline (myfile,line);
+
+            // Ignore empty and commented lines
+            if ((line.length() == 0) || (startswith(line, std::string("#")))) {
+                continue;
+            }
+
             if (!datamode) {
                 if ("[DATA]" == line ) {
                     datamode = true;
