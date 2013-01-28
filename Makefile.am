@@ -76,6 +76,7 @@ EXTRA_DIST = \
 	tables/cj5-sc.txt \
 	tables/cj5-tc.txt \
 	tables/COPYING.tables \
+	tables/README.tables \
 	tests/testdbs.pl \
 	$(NULL)
 

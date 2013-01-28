@@ -1,0 +1,25 @@
+The files in this directory are the text sources for the mapping tables in
+use by the Cangjie and Quick input methods.
+
+See COPYING.tables for legal information.
+
+They are named according to the following convention:
+    <version>-<set>.txt
+
+The <version> can be one of:
+  - `cj3` if the table covers version 3 of Cangjie and Quick
+  - `cj5` if the table covers version 5 of Cangjie and Quick
+
+The <set> can be one of:
+  - `sc` if the table contains Simplified Chinese characters only
+  - `tc` if the table contains Traditional Chinese characters only
+  - `cc` if the table contains both Simplified and Traditional characters
+  - `cjk` if the table contains both Simplified and Traditional as well as
+    Japanese characters.
+
+This gives us a total of 8 tables:
+  cj3-cc.txt  cj3-cjk.txt  cj3-sc.txt  cj3-tc.txt
+  cj5-cc.txt  cj5-cjk.txt  cj5-sc.txt  cj5-tc.txt
+
+Note that for more convenience, the built tables (in a BerkeleyDB format) will
+be named accordingly to this same naming convention.
