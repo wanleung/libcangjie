@@ -13280,3 +13280,13 @@ zxcv   〝
 zxcw   〞
 zxcx   ‵
 zxcy   ′
+
+# The following were added as part of libcangjie -----------------------------
+
+# These characters are very widely used by Hong Kong people, who otherwise
+# write exclusively Traditional Chinese. They all exist in other tables we
+# ship (e.g 'cj?-cc.txt') but really ought to be included here as well, for
+# the sake of Hong Kong people
+rhai   啲
+punl   邨
+nfbcn  鰂
