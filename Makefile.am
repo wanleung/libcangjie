@@ -18,7 +18,14 @@ libcangjie_la_SOURCES = \
 	$(NULL)
 libcangjie_la_CXXFLAGS = -I./src
 libcangjie_la_LDFLAGS = -version-info $(CANGJIE_SO_VERSION)
-libcangjie_la_LIBADD = $(DBCXX_LIBS)
+libcangjie_la_LIBADD = $(DBCXX_LIBS) libutil.la
+
+noinst_LTLIBRARIES = libutil.la
+libutil_la_SOURCES = \
+	src/util.cpp \
+	src/util.h \
+	$(NULL)
+libutil_la_CXXFLAGS = -I./src
 
 libcangjie_la_include_HEADERS = \
 	src/cangjie.h \
