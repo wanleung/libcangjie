@@ -24,9 +24,10 @@
 #include <db_cxx.h>
 #include <fstream>
 
+#include "util.h"
+
 using namespace std;
 
-//const char* kDatabaseName = "access.db";
 
 int main(int argc, const char* argv[]) {
 
@@ -65,19 +66,21 @@ int main(int argc, const char* argv[]) {
 
     ifstream myfile (filename);
     if (myfile.is_open()) {
-        int count = 0;
         while ( myfile.good() ) {
-            //if (count++ > 10) {
-            //    break;
-            //}
             getline (myfile,line);
+
+            // Ignore empty and commented lines
+            if ((line.length() == 0) || (startswith(line, std::string("#")))) {
+                continue;
+            }
+
             if (!datamode) {
                 if ("[DATA]" == line ) {
                     datamode = true;
                 }
                 continue;
             }
-            //cout << (int)line[8]  << endl;
+
             int index = 0;
             while (32 != (char)line[index]) {
                 index++;
@@ -97,7 +100,6 @@ int main(int argc, const char* argv[]) {
         cout << "Unable to open file";
     }
 
-
     // You need to set ulen and flags=DB_DBT_USERMEM to prevent Dbt
     // from allocate its own memory but use the memory provided by you.
     string search("aa");
@@ -115,11 +117,6 @@ int main(int argc, const char* argv[]) {
 
     if (pdb != NULL) {
       pdb->close(0);
-      delete pdb;
-      // You have to close and delete an exisiting handle, then create
-      // a new one before you can use it to remove a database (file).
-      pdb = new Db(NULL, 0);
-      //pdb->remove("access.db", NULL, 0);
       delete pdb;
     }
     env.close(0);

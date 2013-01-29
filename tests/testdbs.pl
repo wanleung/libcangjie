@@ -28,19 +28,15 @@ use File::Basename;
 binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 
-my %tables = ("tables/cj3-6763.txt"  => "data/cj3-sc.mb",
-              "tables/cj3-13053.txt" => "data/cj3-tc.mb",
-              "tables/cj3-20902.txt" => "data/cj3-cc.mb",
-              "tables/cj3-70000.txt" => "data/cj3-cjk.mb",
-              "tables/cj5-8300.txt"  => "data/cj5-sc.mb",
-              "tables/cj5-13053.txt" => "data/cj5-tc.mb",
-              "tables/cj5-20902.txt" => "data/cj5-cc.mb",
-              "tables/cj5-70000.txt" => "data/cj5-cjk.mb");
+my @tables = ("cj3-sc", "cj3-tc", "cj3-cc", "cj3-cjk",
+              "cj5-sc", "cj5-tc", "cj5-cc", "cj5-cjk");
 
 
 sub main {
-    my $tablefilename = shift;
-    my $dbfilename = shift;
+    my $table = shift;
+
+    my $tablefilename = "tables/$table.txt";
+    my $dbfilename = "data/$table.mb";
 
     print(STDOUT "Checking $tablefilename...\n");
 
@@ -62,6 +58,12 @@ sub main {
         # Strip whitespace
         $line=~s/^ +//;
         $line=~s/ +$//;
+        $line=~s/\n+$//;
+
+        # Ignore empty and commented lines
+        if (($line =~ /^#/) || ($line eq "")) {
+            next;
+        }
 
         if ($in_data) {
             $table_count = $table_count + 1;
@@ -97,6 +99,6 @@ sub main {
 }
 
 
-for my $key (keys %tables) {
-    main($key, $tables{$key});
+for my $key (@tables) {
+    main($key);
 }

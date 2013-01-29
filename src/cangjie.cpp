@@ -19,29 +19,12 @@
 
 #include "cangjie.h"
 #include "cangjieconfig.h"
+#include "util.h"
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdexcept>
 
 using namespace std;
-
-/* These are some simple helper functions, used by the CangJie class below.
- *
- * They are not (and should not) be exposed as part as the public API.
- */
-bool startswith(std::string s, std::string begin) {
-    return (s.find(begin) == 0);
-}
-
-bool endswith(std::string s, std::string ending) {
-    if (s.length() >= ending.length()) {
-        return (s.compare(s.length() - ending.length(), ending.length(), ending) == 0);
-    } else {
-        return false;
-    }
-}
-// End of the helper functions
-
 
 string CANGJIE_SIMPLIFIED_DB("sc.mb");
 string CANGJIE_TRADITIONAL_DB("tc.mb");
