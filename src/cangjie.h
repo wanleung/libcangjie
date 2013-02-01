@@ -46,7 +46,10 @@ class CangJie {
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
         std::vector<std::string> getCharactersRange (std::string begin, std::string ending);
+        std::vector<std::string> sortbyfreq (std::vector<std::string> result);
         CangJie() : cangjie_env_(0) {}
         void close();
 };
 
+        Db* wordfreq_;//FIXME: Try to add it to private header of class CangJie without segfault
+                      //       Testing on other system welcome.

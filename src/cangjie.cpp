@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdexcept>
+#include <algorithm>
 
 using namespace std;
 
@@ -46,6 +47,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
     mkdir(cangjie_runtime_dir.c_str(), S_IRWXU);
 
     string db_filename(CANGJIE_DATA_DIR);
+    string wordfq_filename(CANGJIE_DATA_DIR);
     try {
 
         cangjie_env_ = new DbEnv(0);
@@ -81,25 +83,31 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
         }
 
+        wordfq_filename += "wordfreq.mb";
+
         cangjie_db_ = new Db(cangjie_env_, 0);
+        wordfreq_ = new Db(cangjie_env_, 0);
         cangjie_db_->set_error_stream(&std::cerr);
+        wordfreq_->set_error_stream(&std::cerr);
 
         uint32_t db_flags = DB_TRUNCATE;
         cangjie_db_->set_flags( DB_DUP );// | DB_DUPSORT);
+        wordfreq_->set_flags( DB_DUP );
 
         // Open the database
         cangjie_db_->open(NULL, db_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
+        wordfreq_->open(NULL, wordfq_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
     }
     // DbException is not a subclass of std::exception, so we
     // need to catch them both.
     catch(DbException &e)
     {
-        std::cerr << "Error opening database: " << db_filename << "\n";
+        std::cerr << "Cannot open tables or frequency database!\n";
         std::cerr << e.what() << std::endl;
     }
     catch(std::exception &e)
     {
-        std::cerr << "Error opening database: " << db_filename << "\n";
+        std::cerr << "Cannot open tables or frequency database!\n";
         std::cerr << e.what() << std::endl;
     }
 }
@@ -112,6 +120,8 @@ void CangJie::close()
     {
         cangjie_db_->close(0);
         delete cangjie_db_;
+        wordfreq_->close(0);
+        delete wordfreq_;
         cangjie_env_->close(0);
         delete cangjie_env_;
     }
@@ -190,7 +200,7 @@ std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::st
     } catch (std::exception& e) {
         cerr << e.what() << endl;
     }
-    return result;
+    return sortbyfreq(result);
 }
 
 bool CangJie::isCangJieInputKey(char c) {
@@ -219,4 +229,45 @@ std::string CangJie::translateInputKeyToCangJie(char key) {
         return NULL;
     }
     return string(inputcodemap[key - 'a']);
+}
+
+std::vector<std::string> CangJie::sortbyfreq (std::vector<std::string> result)
+{
+    vector< int > freq;
+    vector< string > sorted;
+    vector< pair<int, string> > freqandword;
+
+    try {
+        Dbc *cursor;
+        wordfreq_->cursor(NULL, &cursor, 0);
+            for (vector<string>::iterator it = result.begin(); it != result.end(); ++it) { //get the candidates
+                Dbt key(const_cast<char *>((*it).c_str()), (*it).size());
+                Dbt data;
+                int ret = cursor->get(&key, &data, DB_SET);
+                if (!ret) {
+                    freq.push_back (*((int*)data.get_data()));
+                }//get the frequency from db
+                else if (ret == DB_NOTFOUND) {
+                    freq.push_back (atoi("0"));
+                }//If we can't find the frequency of a word, put 0 in front of it.
+            }
+        }
+    catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
+    }
+
+    //Finish finding frequency of candidates.Now sorting
+    if (freq.size()==result.size()) {
+        //Make pair for sorting
+        for (size_t i = 0; i < result.size(); ++i)
+        freqandword.push_back( make_pair( freq[i], result[i] ));
+        sort(freqandword.rbegin(), freqandword.rend());//sort...
+
+        //Return the sorted characters
+        for (int i=0; i<freqandword.size(); i++)
+        sorted.push_back(freqandword[i].second);
+    }
+    return sorted;
 }
