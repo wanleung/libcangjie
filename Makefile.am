@@ -4,11 +4,17 @@ ACLOCAL_AMFLAGS  = -I m4 ${ACLOCAL_FLAGS}
 # -- bin/ ----------------------------
 bin_PROGRAMS = \
 	bin/libcangjie_dbbuilder \
+	bin/wordfreq_dbbuilder \
 	$(NULL)
 bin_libcangjie_dbbuilder_SOURCES = \
 	src/dbbuilder.cpp \
 	$(NULL)
 bin_libcangjie_dbbuilder_LDADD = $(DBCXX_LIBS) libutil.la
+
+bin_wordfreq_dbbuilder_SOURCES = \
+	src/freqbuilder.cpp \
+	$(NULL)
+bin_wordfreq_dbbuilder_LDADD = $(DBCXX_LIBS)
 
 # -- src/ ----------------------------
 lib_LTLIBRARIES = libcangjie.la
@@ -46,6 +52,10 @@ data/%.mb: bin/libcangjie_dbbuilder tables/%.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
+data/wordfreq.mb: bin/wordfreq_dbbuilder words/frequency.txt
+	$(MKDIR_P) data
+	$^ $@ >/dev/null
+
 libcangjie_data_DATA = \
 	data/cj3-cc.mb \
 	data/cj3-cjk.mb \
@@ -55,6 +65,7 @@ libcangjie_data_DATA = \
 	data/cj5-cjk.mb \
 	data/cj5-sc.mb \
 	data/cj5-tc.mb \
+	data/wordfreq.mb \
 	$(NULL)
 libcangjie_datadir = $(pkgdatadir)
 
@@ -85,6 +96,10 @@ EXTRA_DIST = \
 	tables/COPYING.tables \
 	tables/README.tables \
 	tests/testdbs.pl \
+	words/README \
+	words/countfreq.sh \
+	words/getcorpus.cpp \
+	words/frequency.txt \
 	$(NULL)
 
 TESTS = \

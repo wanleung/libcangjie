@@ -1,0 +1,21 @@
+The generated files here are made from the following files:
+
+zhwiki-20130124-pages-articles-multistream.xml
+zh_yuewiki-20130123-pages-articles-multistream.xml
+
+As found on http://dumps.wikimedia.org/
+
+Read http://dumps.wikimedia.org/legal.html for license.
+
+---------------------
+Generating method and info:
+
+Run the countfreq.sh script first like:
+
+sh countfreq.sh zh_yuewiki-20130123-pages-articles-multistream.xml -nocount
+sh countfreq.sh zhwiki-20130124-pages-articles-multistream.xml > frequency.txt
+
+The nocount in the first command is for the combination of the later corpus, you can add more txt file after that using something like the first command.
+
+This would require a lot time and disk space, the result file was generated on an AMD 3.1ghz core processor, which took about 51 mins, so be patient.
+Two original file after bunzip2 is about 3.8GB, while the generated corpus is about 1.6GB.
