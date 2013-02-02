@@ -190,7 +190,11 @@ std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::st
         s_key = string((char *)key.get_data(), key.get_size());
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
             if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
-                result.push_back(string((char *)data.get_data(), data.get_size()));
+                if (std::find(result.begin(), result.end(),
+                string((char *)data.get_data(), data.get_size())) == result.end()) {
+                //Make sure no duplicate will be in the candidate list
+                    result.push_back(string((char *)data.get_data(), data.get_size()));
+                }
             }
             ret = cursor->get(&key, &data, DB_NEXT);
             s_key = string((char *)key.get_data(), key.get_size());
