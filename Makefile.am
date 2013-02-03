@@ -3,9 +3,16 @@ ACLOCAL_AMFLAGS  = -I m4 ${ACLOCAL_FLAGS}
 
 # -- bin/ ----------------------------
 bin_PROGRAMS = \
+	bin/libcangjie_cli \
 	bin/libcangjie_dbbuilder \
 	bin/wordfreq_dbbuilder \
 	$(NULL)
+
+bin_libcangjie_cli_SOURCES = \
+	src/test.cpp \
+	$(NULL)
+bin_libcangjie_cli_LDADD = $(DBCXX_LIBS) libutil.la libcangjie.la
+
 bin_libcangjie_dbbuilder_SOURCES = \
 	src/dbbuilder.cpp \
 	$(NULL)
