@@ -43,6 +43,7 @@ class CangJie {
     private:
         DbEnv *cangjie_env_;
         Db* cangjie_db_;
+        Db* wordfreq_;
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
         std::vector<std::string> getCharactersRange (std::string begin, std::string ending);
@@ -50,6 +51,3 @@ class CangJie {
         CangJie() : cangjie_env_(0) {}
         void close();
 };
-
-        Db* wordfreq_;//FIXME: Try to add it to private header of class CangJie without segfault
-                      //       Testing on other system welcome.
