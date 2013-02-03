@@ -192,10 +192,11 @@ std::vector<ChChar> CangJie::getCharactersRange (std::string begin, std::string 
         int count = 0;
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
             if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
+                ChChar cha(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++);
                 //if (std::find(result.begin(), result.end(),
                 //ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++)) == result.end()) {
                 //Make sure no duplicate will be in the candidate list
-                    result.push_back(ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++));
+                    result.push_back(cha);
                 //}
             }
             ret = cursor->get(&key, &data, DB_NEXT);
@@ -206,6 +207,7 @@ std::vector<ChChar> CangJie::getCharactersRange (std::string begin, std::string 
     } catch (std::exception& e) {
         cerr << e.what() << endl;
     }
+    assign_freq(result);
     return result;//sortbyfreq(result);
 }
 
@@ -236,6 +238,31 @@ std::string CangJie::translateInputKeyToCangJie(char key) {
     }
     return string(inputcodemap[key - 'a']);
 }
+
+
+void CangJie::assign_freq(std::vector<ChChar> &result)
+{
+    try {
+        Dbc *cur;
+        wordfreq_->cursor(NULL, &cur, 0);
+        for (int i = 0; i < result.size(); i++) {
+            ChChar &ch = result[i];
+            Dbt key(const_cast<char *>(ch.chchar().c_str()), ch.chchar().size());
+            Dbt data;
+            int ret = cur->get(&key, &data, DB_SET);
+            if (!ret) {
+                uint32_t value = *(uint32_t *)data.get_data();
+                ch.set_frequency(value);
+            }
+        }
+
+    } catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
+    }
+}
+
 /*
 std::vector<ChChar> CangJie::sortbyfreq (std::vector<ChChar> result)
 {

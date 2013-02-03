@@ -49,6 +49,8 @@ class CangJie {
         uint32_t cangjie_flags_;
         std::vector<ChChar> getCharactersRange (std::string begin, std::string ending);
         //std::vector<ChChar> sortbyfreq (std::vector<ChChar> result);
+        void assign_freq(std::vector<ChChar> &result);
+
         CangJie() : cangjie_env_(0) {}
         void close();
 };
