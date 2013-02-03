@@ -27,6 +27,7 @@ bin_wordfreq_dbbuilder_LDADD = $(DBCXX_LIBS)
 lib_LTLIBRARIES = libcangjie.la
 libcangjie_la_SOURCES = \
 	src/fullchar.cpp \
+	src/chchar.cpp \
 	src/cangjie.cpp \
 	$(NULL)
 libcangjie_la_CXXFLAGS = -I./src
