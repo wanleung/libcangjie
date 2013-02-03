@@ -7,6 +7,8 @@
 #include <vector>
 //#include <db_cxx.h>
 
+//#include "chchar.h"
+
 using namespace std;
 
 int main(int argc, const char* argv[]) {
@@ -23,14 +25,14 @@ int main(int argc, const char* argv[]) {
 
     //cj.open_db();
 
-    vector<string> ss;
+    vector<ChChar> ss;
 
     string str(argv[1]);
     ss = cj.getCharacters(str);   
     //cj.close_db();
 
    for(int i=0; i < ss.size(); i++) {
-      cout << ss[i] << " ";
+      cout << ss[i].chchar() << " " << ss[i].order() << " " << ss[i].frequency() << " " << ss[i].type() << " " << endl;
    }
    cout << endl;
    cout << "TOTAL:" << ss.size() << endl;

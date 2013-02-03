@@ -55,3 +55,13 @@ uint32_t ChChar::order()
 {
     return order_;
 }
+
+bool operator== (ChChar &c1, ChChar &c2)
+{
+    return (c1.chchar() == c2.chchar());
+}
+
+bool operator!= (ChChar &c1, ChChar &c2)
+{
+    return !(c1 == c2);
+}

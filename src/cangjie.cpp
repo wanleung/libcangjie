@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <stdexcept>
-#include <algorithm>
+//#include <algorithm>
 
 using namespace std;
 
@@ -138,8 +138,8 @@ void CangJie::close()
 }
 
 
-std::vector<std::string> CangJie::getCharacters (std::string code) {
-    vector<string> result;
+std::vector<ChChar> CangJie::getCharacters (std::string code) {
+    vector<ChChar> result;
 
     // If the input code has a wildcard, call the dedicated function
     int pos = code.find("*");
@@ -162,8 +162,9 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
         Dbt data;
 
         int ret = cursor->get(&key, &data, DB_SET);
+        int count = 0;
         while (ret != DB_NOTFOUND) {
-            result.push_back(string((char *)data.get_data(), data.get_size()));
+            result.push_back(ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++));
             ret = cursor->get(&key, &data, DB_NEXT_DUP);
         }
 
@@ -175,8 +176,8 @@ std::vector<std::string> CangJie::getCharacters (std::string code) {
     return result;
 }
 
-std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::string ending) {
-    vector<string> result;
+std::vector<ChChar> CangJie::getCharactersRange (std::string begin, std::string ending) {
+    vector<ChChar> result;
 
     try {
         Dbc *cursor;
@@ -188,13 +189,14 @@ std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::st
 
         int ret = cursor->get(&key, &data, DB_SET_RANGE);
         s_key = string((char *)key.get_data(), key.get_size());
+        int count = 0;
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
             if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
-                if (std::find(result.begin(), result.end(),
-                string((char *)data.get_data(), data.get_size())) == result.end()) {
+                //if (std::find(result.begin(), result.end(),
+                //ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++)) == result.end()) {
                 //Make sure no duplicate will be in the candidate list
-                    result.push_back(string((char *)data.get_data(), data.get_size()));
-                }
+                    result.push_back(ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++));
+                //}
             }
             ret = cursor->get(&key, &data, DB_NEXT);
             s_key = string((char *)key.get_data(), key.get_size());
@@ -204,7 +206,7 @@ std::vector<std::string> CangJie::getCharactersRange (std::string begin, std::st
     } catch (std::exception& e) {
         cerr << e.what() << endl;
     }
-    return sortbyfreq(result);
+    return result;//sortbyfreq(result);
 }
 
 bool CangJie::isCangJieInputKey(char c) {
@@ -234,12 +236,12 @@ std::string CangJie::translateInputKeyToCangJie(char key) {
     }
     return string(inputcodemap[key - 'a']);
 }
-
-std::vector<std::string> CangJie::sortbyfreq (std::vector<std::string> result)
+/*
+std::vector<ChChar> CangJie::sortbyfreq (std::vector<ChChar> result)
 {
     vector< int > freq;
-    vector< string > sorted;
-    vector< pair<int, string> > freqandword;
+    vector< ChChar > sorted;
+    vector< pair<int, ChChar> > freqandword;
 
     try {
         Dbc *cursor;
@@ -275,3 +277,4 @@ std::vector<std::string> CangJie::sortbyfreq (std::vector<std::string> result)
     }
     return sorted;
 }
+*/

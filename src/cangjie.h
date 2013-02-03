@@ -20,6 +20,7 @@
 #include <string.h>
 #include <vector>
 #include <db_cxx.h>
+#include "chchar.h"
 
 #define CANGJIE_SIMPLIFIED    0x00000001
 #define CANGJIE_TRADITIONAL   0x00000010
@@ -35,7 +36,7 @@ class CangJie {
     public:
         CangJie (CangJie_Version_Type version, uint32_t flags);
         ~CangJie() { close(); }
-        std::vector<std::string> getCharacters (std::string code);
+        std::vector<ChChar> getCharacters (std::string code);
         bool isCangJieInputKey (char c);
         std::string getFullWidthChar(char key);
         std::string translateInputKeyToCangJie(char key);
@@ -46,8 +47,8 @@ class CangJie {
         Db* wordfreq_;
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
-        std::vector<std::string> getCharactersRange (std::string begin, std::string ending);
-        std::vector<std::string> sortbyfreq (std::vector<std::string> result);
+        std::vector<ChChar> getCharactersRange (std::string begin, std::string ending);
+        //std::vector<ChChar> sortbyfreq (std::vector<ChChar> result);
         CangJie() : cangjie_env_(0) {}
         void close();
 };
