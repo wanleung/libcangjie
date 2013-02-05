@@ -45,11 +45,15 @@ class CangJie {
         DbEnv *cangjie_env_;
         Db* cangjie_db_;
         Db* wordfreq_;
+        Db* tc_db_;
+        Db* sc_db_;
         CangJie_Version_Type cangjie_version_;
         uint32_t cangjie_flags_;
         std::vector<ChChar> getCharactersRange (std::string begin, std::string ending);
         //std::vector<ChChar> sortbyfreq (std::vector<ChChar> result);
         void assign_freq(std::vector<ChChar> &result);
+
+        uint32_t getType(std::string chr);
 
         CangJie() : cangjie_env_(0) {}
         void close();

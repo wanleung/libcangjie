@@ -48,6 +48,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
     string db_filename(CANGJIE_DATA_DIR);
     string wordfq_filename(CANGJIE_DATA_DIR);
+ 
     try {
 
         cangjie_env_ = new DbEnv(0);
@@ -87,8 +88,13 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
         cangjie_db_ = new Db(cangjie_env_, 0);
         wordfreq_ = new Db(cangjie_env_, 0);
+        tc_db_ = new Db(cangjie_env_, 0);
+        sc_db_ = new Db(cangjie_env_, 0);
+
         cangjie_db_->set_error_stream(&std::cerr);
         wordfreq_->set_error_stream(&std::cerr);
+        tc_db_->set_error_stream(&std::cerr);
+        sc_db_->set_error_stream(&std::cerr);
 
         uint32_t db_flags = DB_TRUNCATE;
         cangjie_db_->set_flags( DB_DUP );// | DB_DUPSORT);
@@ -97,6 +103,11 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
         // Open the database
         cangjie_db_->open(NULL, db_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
         wordfreq_->open(NULL, wordfq_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
+
+        string tc_dbpath(CANGJIE_DATA_DIR); tc_dbpath += "tc.mb";
+        tc_db_->open(NULL, tc_dbpath.c_str(), NULL, DB_HASH, DB_RDONLY, 0);
+        string sc_dbpath(CANGJIE_DATA_DIR); sc_dbpath += "sc.mb";
+        sc_db_->open(NULL, sc_dbpath.c_str(), NULL, DB_HASH, DB_RDONLY, 0);
     }
     // DbException is not a subclass of std::exception, so we
     // need to catch them both.
@@ -119,9 +130,15 @@ void CangJie::close()
     try
     {
         cangjie_db_->close(0);
-        delete cangjie_db_;
         wordfreq_->close(0);
+        tc_db_->close(0);
+        sc_db_->close(0);        
+
+        delete cangjie_db_;
         delete wordfreq_;
+        delete tc_db_;
+        delete sc_db_;
+        
         cangjie_env_->close(0);
         delete cangjie_env_;
     }
@@ -194,7 +211,7 @@ std::vector<ChChar> CangJie::getCharactersRange (std::string begin, std::string 
         int count = 0;
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
             if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
-                ChChar cha(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++);
+                ChChar cha(string((char *)data.get_data(), data.get_size()), getType(string((char *)data.get_data(), data.get_size())), count++);
                 cha.set_code(string((char *)key.get_data(), key.get_size()));
                 //if (std::find(result.begin(), result.end(),
                 //ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++)) == result.end()) {
@@ -242,18 +259,39 @@ std::string CangJie::translateInputKeyToCangJie(char key) {
     return string(inputcodemap[key - 'a']);
 }
 
+uint32_t CangJie::getType(std::string chr)
+{
+    uint32_t result = 0;
+    try {
+       Dbt key(const_cast<char *>(chr.c_str()), chr.size());
+       Dbt data;
+       if (DB_NOTFOUND != tc_db_->get(NULL, &key, &data, 0)) {
+           result |= CHCHAR_TRADITIONAL; 
+       }
+
+       if (DB_NOTFOUND != sc_db_->get(NULL, &key, &data, 0)) {
+           result |= CHCHAR_SIMPLIFIED;
+       }
+
+    } catch (DbException& e) {
+        cerr << "DbException: " << e.what() << endl;
+    } catch (std::exception& e) {
+        cerr << e.what() << endl;
+    }
+
+    return result;
+}
 
 void CangJie::assign_freq(std::vector<ChChar> &result)
 {
     try {
-        Dbc *cur;
-        wordfreq_->cursor(NULL, &cur, 0);
+        //Dbc *cur;
+        //wordfreq_->cursor(NULL, &cur, 0);
         for (int i = 0; i < result.size(); i++) {
             ChChar &ch = result[i];
             Dbt key(const_cast<char *>(ch.chchar().c_str()), ch.chchar().size());
             Dbt data;
-            int ret = cur->get(&key, &data, DB_SET);
-            if (!ret) {
+            if (DB_NOTFOUND != wordfreq_->get(NULL, &key, &data, 0)) {
                 uint32_t value = *(uint32_t *)data.get_data();
                 ch.set_frequency(value);
             }
