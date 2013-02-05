@@ -24,7 +24,7 @@ using namespace std;
 #define CHCHAR_SIMPLIFIED    0x00000001
 #define CHCHAR_TRADITIONAL   0x00000010
 #define CHCHAR_BOTH          0x00000011
-#define CHCHAR_OTHER         0x00000111
+#define CHCHAR_OTHER         0x00000000
 
 class ChChar
 {
