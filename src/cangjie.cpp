@@ -164,7 +164,9 @@ std::vector<ChChar> CangJie::getCharacters (std::string code) {
         int ret = cursor->get(&key, &data, DB_SET);
         int count = 0;
         while (ret != DB_NOTFOUND) {
-            result.push_back(ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++));
+            ChChar cha(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++);
+            cha.set_code(string((char *)key.get_data(), key.get_size()));
+            result.push_back(cha);
             ret = cursor->get(&key, &data, DB_NEXT_DUP);
         }
 
@@ -193,6 +195,7 @@ std::vector<ChChar> CangJie::getCharactersRange (std::string begin, std::string 
         while (ret != DB_NOTFOUND && startswith(s_key, begin)) {
             if ((s_key.length() >= (begin.length() + ending.length())) && endswith(s_key, ending)) {
                 ChChar cha(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++);
+                cha.set_code(string((char *)key.get_data(), key.get_size()));
                 //if (std::find(result.begin(), result.end(),
                 //ChChar(string((char *)data.get_data(), data.get_size()), CHCHAR_BOTH, count++)) == result.end()) {
                 //Make sure no duplicate will be in the candidate list

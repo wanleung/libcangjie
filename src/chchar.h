@@ -38,11 +38,15 @@ class ChChar
         void set_frequency(uint32_t frequency);
         uint32_t order();
 
+        string code();
+        void set_code(string code);
+
         friend bool operator== (ChChar &c1, ChChar &c2);
         friend bool operator!= (ChChar &c1, ChChar &c2);
 
     private:
-        string chchar_;    
+        string chchar_;
+        string code_;
         uint32_t type_;
         uint32_t frequency_;
         uint32_t order_;

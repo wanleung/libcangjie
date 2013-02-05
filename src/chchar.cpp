@@ -36,6 +36,16 @@ std::string ChChar::chchar()
     return chchar_;
 }
 
+std::string ChChar::code()
+{
+    return code_;
+}
+
+void ChChar::set_code(std::string code)
+{
+    code_ = string(code);
+}
+
 uint32_t ChChar::type()
 {
     return type_;

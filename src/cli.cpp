@@ -51,7 +51,7 @@ int main(int argc, const char* argv[]) {
     //cj.close_db();
 
    for(int i=0; i < ss.size(); i++) {
-      cout << ss[i].chchar() << " " << ss[i].order() << " " << ss[i].frequency() << " " << ss[i].type() << " " << endl;
+      cout << ss[i].chchar() << " " << ss[i].code() << " " << ss[i].order() << " " << ss[i].frequency() << " " << ss[i].type() << " " << endl;
    }
    cout << endl;
    cout << "TOTAL:" << ss.size() << endl;
