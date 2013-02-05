@@ -92,7 +92,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
         uint32_t db_flags = DB_TRUNCATE;
         cangjie_db_->set_flags( DB_DUP );// | DB_DUPSORT);
-        wordfreq_->set_flags( DB_DUP );
+        //wordfreq_->set_flags( DB_DUP );
 
         // Open the database
         cangjie_db_->open(NULL, db_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);

@@ -47,7 +47,7 @@ int main(int argc, const char* argv[]) {
     env.open("./", DB_CREATE | DB_INIT_MPOOL, 0);
 
     pdb = new Db(&env, 0);
-    pdb->set_flags( DB_DUP );// | DB_DUPSORT);
+    //pdb->set_flags( DB_DUP );// | DB_DUPSORT);
     pdb->open(NULL, kDatabaseName, NULL, DB_BTREE, DB_CREATE | DB_TRUNCATE, 0);
 
     ifstream myfile (filename);

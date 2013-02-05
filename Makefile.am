@@ -9,7 +9,7 @@ bin_PROGRAMS = \
 	$(NULL)
 
 bin_libcangjie_cli_SOURCES = \
-	src/test.cpp \
+	src/cli.cpp \
 	$(NULL)
 bin_libcangjie_cli_LDADD = $(DBCXX_LIBS) libutil.la libcangjie.la
 
