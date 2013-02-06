@@ -35,7 +35,7 @@ You will need the following to build this library:
 Legal
 =====
 
-Copyright (C) 2012  Wan Leung Wong <wanleung at linkomnia dot com>
+Copyright (C) 2012  Wan Leung Wong <me at wanleung dot com>
 
 libcangjie is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

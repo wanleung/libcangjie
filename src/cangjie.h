@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Wan Leung Wong <wanleung at linkomnia dot com>
+ * Copyright (C) 2012  Wan Leung Wong <me at wanleung dot com>
  *
  * This file is part of libcangjie.
  *
