@@ -66,7 +66,7 @@ data/%.mb: bin/libcangjie_dbbuilder tables/%.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
-data/wordfreq.mb: bin/wordfreq_dbbuilder words/frequency.txt
+data/wordfreq.mb: bin/wordfreq_dbbuilder freq-data/frequency.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
@@ -120,10 +120,10 @@ EXTRA_DIST = \
 	tables/COPYING.tables \
 	tables/README.tables \
 	tests/testdbs.pl \
-	words/README \
-	words/countfreq.sh \
-	words/getcorpus.cpp \
-	words/frequency.txt \
+	freq-data/README \
+	freq-data/countfreq.sh \
+	freq-data/getcorpus.cpp \
+	freq-data/frequency.txt \
 	filter/tc.txt \
 	filter/sc.txt \
 	$(NULL)
