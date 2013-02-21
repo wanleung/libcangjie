@@ -192,6 +192,7 @@ std::vector<ChChar> CangJie::getCharacters (std::string code) {
     } catch (std::exception& e) {
         cerr << e.what() << endl;
     }
+    assign_freq(result);
     return result;
 }
 
