@@ -49,6 +49,7 @@ libutil_la_CXXFLAGS = -I./src
 
 libcangjie_la_include_HEADERS = \
 	src/cangjie.h \
+	src/chchar.h \
 	$(NULL)
 libcangjie_la_includedir = $(includedir)/cangjie
 
