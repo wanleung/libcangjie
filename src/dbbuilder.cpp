@@ -87,7 +87,7 @@ int main(int argc, const char* argv[]) {
         }
         myfile.close();
     } else {
-        cout << "Unable to open file";
+        cerr << "Unable to open file";
     }
 
     if (pdb != NULL) {
