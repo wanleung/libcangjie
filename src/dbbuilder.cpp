@@ -47,22 +47,13 @@ int main(int argc, const char* argv[]) {
   bool datamode = false;
 
   try {
-
     env.set_error_stream(&cerr);
     env.open("./", DB_CREATE | DB_INIT_MPOOL, 0);
 
     pdb = new Db(&env, 0);
-    // If you want to support duplicated records and make duplicated
-    // records sorted by data, you need to call:
-    //   pdb->set_flags(DB_DUPSORT);
-    // Note that only Btree-typed database supports sorted duplicated
-    // records
-
-    // If the database does not exist, create it.  If it exists, clear
-    // its content after openning.
-    pdb->set_flags( DB_DUP );// | DB_DUPSORT);
+    pdb->set_flags(DB_DUP);
+    // Create (or clear its content if it exists) the database
     pdb->open(NULL, kDatabaseName, NULL, DB_BTREE, DB_CREATE | DB_TRUNCATE, 0);
-
 
     ifstream myfile (filename);
     if (myfile.is_open()) {
@@ -89,30 +80,14 @@ int main(int argc, const char* argv[]) {
             while (32 == line[index]) {
                 index++;
             }
-            string cjdata = line.substr(index, (line.size()-index));
-            cout << cjkey << "---" << cjdata << endl;
             Dbt key(const_cast<char*>(cjkey.data()), cjkey.size());
+            string cjdata = line.substr(index, (line.size()-index));
             Dbt value(const_cast<char*>(cjdata.data()), cjdata.size());
             pdb->put(NULL, &key, &value, 0);
         }
         myfile.close();
     } else {
         cout << "Unable to open file";
-    }
-
-    // You need to set ulen and flags=DB_DBT_USERMEM to prevent Dbt
-    // from allocate its own memory but use the memory provided by you.
-    string search("aa");
-    Dbt key(const_cast<char*>(search.c_str()), search.size());
-    char buffer[1024];
-    Dbt data;
-    data.set_data(buffer);
-    data.set_ulen(1024);
-    data.set_flags(DB_DBT_USERMEM);
-    if (pdb->get(NULL, &key, &data, 0) == DB_NOTFOUND) {
-      cerr << "Not found" << endl;
-    } else {
-      cout << "Found: " << "PPPPPP" <<buffer << "PPPPPP" << endl;
     }
 
     if (pdb != NULL) {
@@ -131,4 +106,3 @@ int main(int argc, const char* argv[]) {
 
   return 0;
 }
-
