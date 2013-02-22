@@ -65,6 +65,7 @@ int main(int argc, const char* argv[]) {
                 continue;
             }
 
+            // Ignore the preamble
             if (!datamode) {
                 if ("[DATA]" == line ) {
                     datamode = true;
@@ -72,6 +73,7 @@ int main(int argc, const char* argv[]) {
                 continue;
             }
 
+            // Get the key code
             int index = 0;
             while (32 != (char)line[index]) {
                 index++;
@@ -81,6 +83,8 @@ int main(int argc, const char* argv[]) {
                 index++;
             }
             Dbt key(const_cast<char*>(cjkey.data()), cjkey.size());
+
+            // Get the character
             string cjdata = line.substr(index, (line.size()-index));
             Dbt value(const_cast<char*>(cjdata.data()), cjdata.size());
             pdb->put(NULL, &key, &value, 0);
@@ -90,6 +94,7 @@ int main(int argc, const char* argv[]) {
         cerr << "Unable to open file";
     }
 
+    // Clean up
     if (pdb != NULL) {
       pdb->close(0);
       delete pdb;
