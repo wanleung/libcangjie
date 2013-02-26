@@ -6,7 +6,7 @@ bin_PROGRAMS = \
 	bin/libcangjie_cli \
 	bin/libcangjie_dbbuilder \
 	bin/libcangjie_char_type_builder \
-	bin/wordfreq_dbbuilder \
+	bin/libcangjie_freqdbbuilder \
 	$(NULL)
 
 bin_libcangjie_cli_SOURCES = \
@@ -24,10 +24,10 @@ bin_libcangjie_char_type_builder_SOURCES = \
 	$(NULL)
 bin_libcangjie_char_type_builder_LDADD = $(DBCXX_LIBS) libutil.la
 
-bin_wordfreq_dbbuilder_SOURCES = \
+bin_libcangjie_freqdbbuilder_SOURCES = \
 	src/freqbuilder.cpp \
 	$(NULL)
-bin_wordfreq_dbbuilder_LDADD = $(DBCXX_LIBS)
+bin_libcangjie_freqdbbuilder_LDADD = $(DBCXX_LIBS)
 
 # -- src/ ----------------------------
 lib_LTLIBRARIES = libcangjie.la
@@ -67,7 +67,7 @@ data/%.mb: bin/libcangjie_dbbuilder tables/%.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
-data/wordfreq.mb: bin/wordfreq_dbbuilder freq-data/frequency.txt
+data/wordfreq.mb: bin/libcangjie_freqdbbuilder freq-data/frequency.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
