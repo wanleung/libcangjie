@@ -23,6 +23,7 @@ ChChar::ChChar(std::string chchar, uint32_t type, uint32_t order) :
     chchar_(chchar),
     type_(type),
     frequency_(0),
+    freqclassic_(0),
     order_(order)
 {
 }
@@ -59,6 +60,16 @@ uint32_t ChChar::frequency()
 void ChChar::set_frequency(uint32_t frequency)
 {
     frequency_ = frequency;
+}
+
+uint32_t ChChar::classic_frequency()
+{
+    return freqclassic_;
+}
+
+void ChChar::set_classic_frequency(uint32_t frequency)
+{
+    freqclassic_ = frequency;
 }
 
 uint32_t ChChar::order()

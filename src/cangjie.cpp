@@ -48,6 +48,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
 
     string db_filename(CANGJIE_DATA_DIR);
     string wordfq_filename(CANGJIE_DATA_DIR);
+    string classicfq_filename(CANGJIE_DATA_DIR);
  
     try {
 
@@ -85,9 +86,12 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
         }
 
         wordfq_filename += "wordfreq.mb";
+        classicfq_filename += "classicfreq.mb";
+
 
         cangjie_db_ = new Db(cangjie_env_, 0);
         wordfreq_ = new Db(cangjie_env_, 0);
+        classicfreq_ = new Db(cangjie_env_, 0);
         tc_db_ = new Db(cangjie_env_, 0);
         sc_db_ = new Db(cangjie_env_, 0);
 
@@ -103,6 +107,7 @@ CangJie::CangJie (CangJie_Version_Type version, uint32_t flags) :
         // Open the database
         cangjie_db_->open(NULL, db_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
         wordfreq_->open(NULL, wordfq_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);
+        classicfreq_->open(NULL, classicfq_filename.c_str(), NULL, DB_BTREE, DB_RDONLY, 0);        
 
         string tc_dbpath(CANGJIE_DATA_DIR); tc_dbpath += "tc.mb";
         tc_db_->open(NULL, tc_dbpath.c_str(), NULL, DB_HASH, DB_RDONLY, 0);
@@ -131,11 +136,13 @@ void CangJie::close()
     {
         cangjie_db_->close(0);
         wordfreq_->close(0);
+        classicfreq_->close(0);
         tc_db_->close(0);
         sc_db_->close(0);        
 
         delete cangjie_db_;
         delete wordfreq_;
+        delete classicfreq_;
         delete tc_db_;
         delete sc_db_;
         
@@ -295,6 +302,12 @@ void CangJie::assign_freq(std::vector<ChChar> &result)
             if (DB_NOTFOUND != wordfreq_->get(NULL, &key, &data, 0)) {
                 uint32_t value = *(uint32_t *)data.get_data();
                 ch.set_frequency(value);
+            }
+            Dbt key1(const_cast<char *>(ch.chchar().c_str()), ch.chchar().size());
+            Dbt data1;
+            if (DB_NOTFOUND != classicfreq_->get(NULL, &key, &data, 0)) {
+                uint32_t value = *(uint32_t *)data.get_data();
+                ch.set_classic_frequency(value);
             }
         }
 

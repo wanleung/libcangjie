@@ -23,9 +23,10 @@
 #include "chchar.h"
 
 #define CANGJIE_SIMPLIFIED    0x00000001
-#define CANGJIE_TRADITIONAL   0x00000010
-#define CANGJIE_COMMON        0x00000011
-#define CANGJIE_ALL_CJK       0x00000111
+#define CANGJIE_TRADITIONAL   0x00000002
+#define CANGJIE_COMMON        0x00000003 // < tick SIMPLIFIED + TRADITIONAL = COMMON
+#define CANGJIE_CJK           0x00000004 // < for tick only 
+#define CANGJIE_ALL_CJK       0x00000007 // COMMON + CANGJIE_CJK  = CANGJIE_ALL_CJK
 
 typedef enum {
     CangJie_Version_Type_3 = 1,
@@ -45,6 +46,7 @@ class CangJie {
         DbEnv *cangjie_env_;
         Db* cangjie_db_;
         Db* wordfreq_;
+        Db* classicfreq_;
         Db* tc_db_;
         Db* sc_db_;
         CangJie_Version_Type cangjie_version_;

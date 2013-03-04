@@ -22,8 +22,8 @@
 using namespace std;
 
 #define CHCHAR_SIMPLIFIED    0x00000001
-#define CHCHAR_TRADITIONAL   0x00000010
-#define CHCHAR_BOTH          0x00000011
+#define CHCHAR_TRADITIONAL   0x00000002
+#define CHCHAR_BOTH          0x00000003
 #define CHCHAR_OTHER         0x00000000
 
 class ChChar
@@ -36,6 +36,9 @@ class ChChar
         uint32_t type();
         uint32_t frequency();
         void set_frequency(uint32_t frequency);
+
+        uint32_t classic_frequency();
+        void set_classic_frequency(uint32_t frequency);
         uint32_t order();
 
         string code();
@@ -50,6 +53,7 @@ class ChChar
         uint32_t type_;
         uint32_t frequency_;
         uint32_t order_;
+        uint32_t freqclassic_;
  
         void close();
 };

@@ -39,7 +39,7 @@ int main(int argc, const char* argv[]) {
     ss = cj.getCharacters(str);   
 
    for(int i=0; i < ss.size(); i++) {
-      cout << ss[i].chchar() << " " << ss[i].code() << " " << ss[i].order() << " " << ss[i].frequency() << " " << ss[i].type() << " " << endl;
+      cout << ss[i].chchar() << " " << ss[i].code() << " " << ss[i].order() << " " << ss[i].frequency() << " " << ss[i].classic_frequency() << " " << ss[i].type() << " " << endl;
    }
    cout << endl;
    cout << "TOTAL:" << ss.size() << endl;
