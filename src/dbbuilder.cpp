@@ -28,34 +28,10 @@
 
 using namespace std;
 
-
-int main(int argc, const char* argv[]) {
-
-  if (argc !=3) {
-      cout << "usage: "<< argv[0] << " <filename> <db filename>" << endl;
-      return 1;
-  }
-
-  const char* kDatabaseName = argv[2];
-  const char* filename = argv[1];
-
-  DbEnv env(0);
-  Db* pdb;
-
-  string line;
-
-  bool datamode = false;
-
-  try {
-    env.set_error_stream(&cerr);
-    env.open("./", DB_CREATE | DB_INIT_MPOOL, 0);
-
-    pdb = new Db(&env, 0);
-    pdb->set_flags(DB_DUP);
-    // Create (or clear its content if it exists) the database
-    pdb->open(NULL, kDatabaseName, NULL, DB_BTREE, DB_CREATE | DB_TRUNCATE, 0);
-
+void readfile(Db* pdb, const char* filename) {
+    string line;
     ifstream myfile (filename);
+    bool datamode = false;
     if (myfile.is_open()) {
         while ( myfile.good() ) {
             getline (myfile,line);
@@ -93,6 +69,32 @@ int main(int argc, const char* argv[]) {
     } else {
         cerr << "Unable to open file";
     }
+}
+
+int main(int argc, const char* argv[]) {
+
+  if (argc !=3) {
+      cout << "usage: "<< argv[0] << " <filename> <db filename>" << endl;
+      return 1;
+  }
+
+  const char* kDatabaseName = argv[2];
+  const char* filename = argv[1];
+
+  DbEnv env(0);
+  Db* pdb;
+
+  try {
+    env.set_error_stream(&cerr);
+    env.open("./", DB_CREATE | DB_INIT_MPOOL, 0);
+
+    pdb = new Db(&env, 0);
+    pdb->set_flags(DB_DUP);
+    // Create (or clear its content if it exists) the database
+    pdb->open(NULL, kDatabaseName, NULL, DB_BTREE, DB_CREATE | DB_TRUNCATE, 0);
+
+    readfile(pdb, filename);
+    readfile(pdb, "tables/jp.txt");
 
     // Clean up
     if (pdb != NULL) {
