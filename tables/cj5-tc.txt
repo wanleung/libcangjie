@@ -14374,3 +14374,4 @@ rhai   啲
 punl   邨
 xpunl  邨
 nfbcn  鰂
+rwgn   嘢
