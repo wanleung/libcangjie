@@ -1,3 +1,5 @@
+###### This file is branched out from ibus-table version 1.3.9.20110827 
+###### 
 ### File header must not be modified
 ### This file must be encoded into UTF-8.
 ### This file comes from xcin module.
