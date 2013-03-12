@@ -20,7 +20,7 @@ LT_INIT([disable-static])
 # For information on how to properly maintain the library version information,
 # refer to the libtool manual, section "Updating library version information":
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-AC_SUBST([CANGJIE_SO_VERSION], [0:0:0])
+AC_SUBST([CANGJIE_SO_VERSION], [1:0:0])
 
 # Check for Berkeley DB
 AC_CHECK_HEADERS(db_cxx.h,HAVE_DBCXX="yes",HAVE_DBCXX="no")
