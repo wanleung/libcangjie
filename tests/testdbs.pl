@@ -87,7 +87,6 @@ sub main {
     for my $addition (@additionals) {
         my $additional_filename = "tables/$addition.txt";
         $additional_filename  = dirname(abs_path($0))."/../".$additional_filename;
-        print $additional_filename;
         my $m_count = readtable($db, $additional_filename);
         $add_table_count += $m_count;
     }
