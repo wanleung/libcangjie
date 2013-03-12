@@ -99,11 +99,13 @@ sub main {
     my $key = 0;
     my $value = 0;
     while ($cursor->c_get($key, $value, DB_NEXT) == 0) {
-        $db_count = $db_count+1;
+        $db_count++ ;
     }
 
-    if (($table_count + $add_table_count) != $db_count) {
-        die("Table contained $table_count entries but DB contains $db_count\n");
+    my $total = $table_count + $add_table_count;
+
+    if ($total != $db_count) {
+        die("Table contained $total entries but DB contains $db_count\n");
     }
 }
 

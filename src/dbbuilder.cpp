@@ -93,8 +93,17 @@ int main(int argc, const char* argv[]) {
     // Create (or clear its content if it exists) the database
     pdb->open(NULL, kDatabaseName, NULL, DB_BTREE, DB_CREATE | DB_TRUNCATE, 0);
 
+    string fname(filename);
+    string directory;
+    const size_t last_slash_idx = fname.rfind('/');
+    if (std::string::npos != last_slash_idx) {
+        directory = fname.substr(0, last_slash_idx);
+    }
+
+    string jpfilename(directory);
+    jpfilename += "/jp.txt";
     readfile(pdb, filename);
-    readfile(pdb, "tables/jp.txt");
+    readfile(pdb, jpfilename.c_str());
 
     // Clean up
     if (pdb != NULL) {
