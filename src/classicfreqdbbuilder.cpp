@@ -59,8 +59,6 @@ int main(int argc, const char* argv[]) {
 
   string line;
 
-  bool datamode = false;
-
   try {
 
     env.set_error_stream(&cerr);
@@ -89,23 +87,11 @@ int main(int argc, const char* argv[]) {
                 continue;
             }
 
-            if (!datamode) {
-                if ("BEGIN_TABLE" == line ) {
-                    datamode = true;
-                }
-                continue;
-            }
-            
-            if ("END_TABLE" == line) {
-                datamode = false;
-                continue;
-            }
+            std::vector<std::string> cj = split(line, ' ');
 
-            std::vector<std::string> cj = split(line, '\t'); 
+            int freq = atoi(cj[1].c_str());
 
-            int freq = atoi(cj[2].c_str());
-
-            Dbt key(const_cast<char*>(cj[1].data()), cj[1].size());
+            Dbt key(const_cast<char*>(cj[0].data()), cj[0].size());
             Dbt value(&freq, sizeof(int));
             pdb->put(NULL, &key, &value, 0);
         }
@@ -133,4 +119,3 @@ int main(int argc, const char* argv[]) {
 
   return 0;
 }
-
