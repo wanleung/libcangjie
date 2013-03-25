@@ -34,6 +34,10 @@ m4
 missing
 src/cangjieconfig.h
 stamp-h1
+test-driver
+test-suite.log
+tests/*.log
+tests/*.trs
 .deps
 .libs
 __db.*

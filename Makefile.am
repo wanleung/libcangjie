@@ -7,7 +7,7 @@ bin_PROGRAMS = \
 	bin/libcangjie_dbbuilder \
 	bin/libcangjie_char_type_builder \
 	bin/libcangjie_freqdbbuilder \
-	bin/libcangjie_quick_classic_builder \
+	bin/libcangjie_classicfreqdbbuilder \
 	$(NULL)
 
 bin_libcangjie_cli_SOURCES = \
@@ -25,10 +25,10 @@ bin_libcangjie_char_type_builder_SOURCES = \
 	$(NULL)
 bin_libcangjie_char_type_builder_LDADD = $(DBCXX_LIBS) libutil.la
 
-bin_libcangjie_quick_classic_builder_SOURCES = \
-	src/quick_classic_builder.cpp \
+bin_libcangjie_classicfreqdbbuilder_SOURCES = \
+	src/classicfreqdbbuilder.cpp \
 	$(NULL)
-bin_libcangjie_quick_classic_builder_LDADD = $(DBCXX_LIBS) libutil.la
+bin_libcangjie_classicfreqdbbuilder_LDADD = $(DBCXX_LIBS) libutil.la
 
 bin_libcangjie_freqdbbuilder_SOURCES = \
 	src/freqbuilder.cpp \
@@ -77,7 +77,7 @@ data/wordfreq.mb: bin/libcangjie_freqdbbuilder freq-data/frequency.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
-data/classicfreq.mb: bin/libcangjie_quick_classic_builder freq-data/quick-classic.txt
+data/classicfreq.mb: bin/libcangjie_classicfreqdbbuilder freq-data/classic-frequency.txt
 	$(MKDIR_P) data
 	$^ $@ >/dev/null
 
@@ -137,7 +137,7 @@ EXTRA_DIST = \
 	freq-data/countfreq.sh \
 	freq-data/getcorpus.cpp \
 	freq-data/frequency.txt \
-	freq-data/quick-classic.txt \
+	freq-data/classic-frequency.txt \
 	filter/tc.txt \
 	filter/sc.txt \
 	$(NULL)
