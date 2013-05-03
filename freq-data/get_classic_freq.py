@@ -37,7 +37,7 @@ def get_freq(s):
     bs = pad4(s.encode("big5"))
     i = struct.unpack(">I", bs)[0]
 
-    return (s, i)
+    return i
 
 
 result = set()
@@ -69,7 +69,7 @@ with open("tables/cj5-tc.txt", "r") as table:
             char = line.split(" ")[-1]
 
             try:
-                result.add(get_freq(char))
+                result.add((char, get_freq(char)))
 
             except UnicodeEncodeError:
                 # Ignore character not in Big5
