@@ -25,6 +25,10 @@ import struct
 MAX_CODE = 0xfefe
 
 
+class Big5Error(Exception):
+    pass
+
+
 def pad4(bs):
     length = len(bs)
 
@@ -37,7 +41,12 @@ def pad4(bs):
 
 
 def get_freq(s):
-    bs = pad4(s.encode("big5"))
+    try:
+        bs = pad4(s.encode("big5"))
+
+    except UnicodeEncodeError:
+        raise Big5Error("The character '%s' does not exist in Big5" % s)
+
     i = struct.unpack(">I", bs)[0]
 
     return MAX_CODE - i
@@ -74,9 +83,11 @@ with open("tables/cj5-tc.txt", "r") as table:
             try:
                 result.add((char, get_freq(char)))
 
-            except UnicodeEncodeError:
-                # Ignore character not in Big5
-                pass
+            except Big5Error as e:
+                # The character is either in a reserved/undefined range of the
+                # Big5 spec, or it doesn't exist in Big5 at all. Ignore it
+                print(e)
+                continue
 
         if not in_data and line == "[DATA]":
             in_data = True
