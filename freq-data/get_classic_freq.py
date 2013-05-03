@@ -40,7 +40,7 @@ def get_freq(s):
     bs = pad4(s.encode("big5"))
     i = struct.unpack(">I", bs)[0]
 
-    return i
+    return MAX_CODE - i
 
 
 result = set()
@@ -82,7 +82,7 @@ with open("tables/cj5-tc.txt", "r") as table:
             in_data = True
 
 
-sorted_chars = sorted(result, key=itemgetter(1))
+sorted_chars = sorted(result, key=itemgetter(1), reverse=True)
 
 with open("classic-frequency.txt", "w") as out_:
     out_.write("""# This file lists the characters found in tables/cj5-tc.txt, ordered by their
@@ -103,5 +103,5 @@ with open("classic-frequency.txt", "w") as out_:
 
 """)
 
-    for char, code in sorted_chars:
-        out_.write("%s %s\n" % (char, MAX_CODE-code))
+    for char, freq in sorted_chars:
+        out_.write("%s %s\n" % (char, freq))
