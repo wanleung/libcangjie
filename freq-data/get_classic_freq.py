@@ -22,6 +22,9 @@ from operator import itemgetter
 import struct
 
 
+MAX_CODE = 0xfefe
+
+
 def pad4(bs):
     length = len(bs)
 
@@ -80,7 +83,6 @@ with open("tables/cj5-tc.txt", "r") as table:
 
 
 sorted_chars = sorted(result, key=itemgetter(1))
-max_freq = sorted_chars[-1][1]
 
 with open("classic-frequency.txt", "w") as out_:
     out_.write("""# This file lists the characters found in tables/cj5-tc.txt, ordered by their
@@ -89,9 +91,17 @@ with open("classic-frequency.txt", "w") as out_:
 # This corresponds to the ordering of the candidates returned by the Cangjie
 # and Quick input methods on a well-known Operating System.
 #
+# Note that the frequency computed below is not directly the code of the
+# character in Big5. Instead it is the result of the following operation:
+#
+#     frequency = max_code - code(character)
+#
+# In the above, max_code is 65278 (0xfefe), which is the highest possible code
+# in Big5.
+#
 # The below list is placed in the Public Domain
 
 """)
 
     for char, code in sorted_chars:
-        out_.write("%s %s\n" % (char, max_freq-code))
+        out_.write("%s %s\n" % (char, MAX_CODE-code))
