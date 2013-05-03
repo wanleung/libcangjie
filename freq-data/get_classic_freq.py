@@ -49,7 +49,51 @@ def get_freq(s):
 
     i = struct.unpack(">I", bs)[0]
 
-    return MAX_CODE - i
+    # This is where it gets ugly.
+    #
+    # See the comments in the generated file (hint it's at the bottom of this
+    # script) for the details of what happens below.
+
+    if 0x8140 <=i and i <= 0xa0fe:
+        # Reserved for user-defined characters
+        raise Big5Error("The code 0x%x for '%s' is reserved for user-defined "
+                         "characters" % (i, s))
+
+    elif 0xa140 <= i and i <= 0xa3bf:
+        # Graphical characters
+        # Their frequency will be between 2025 and 1386
+        freq = (MAX_CODE - 0xc67e) - 1 - (0xf9d5 - 0xc940) -1 - (i - 0xa140)
+
+    elif 0xa3c0 <= i and i<= 0xa3fe:
+        # Reserved, not for user-defined characters
+        raise Big5Error("The code 0x%x for '%s' is reserved, but not for "
+                         "user-defined characters" % (i, s))
+
+    elif 0xa440 <= i and i<= 0xc67e:
+        # Frequently used characters
+        # Their frequency will be between 23230 and 14464
+        freq = MAX_CODE - i
+
+    elif 0xc6a1 <= i and i<= 0xc8fe:
+        # Reserved for user-defined characters
+        raise Big5Error("The code 0x%x for '%s' is reserved for user-defined "
+                         "characters" % (i, s))
+
+    elif 0xc940 <= i and i<= 0xf9d5:
+        # Less frequently used characters
+        # Their frequency will be between 14463 and 2026
+        freq = (MAX_CODE - 0xc67e) - 1 - (i - 0xc940)
+
+    elif 0xf9d6 <= i and i<= 0xfefe:
+        # Reserved for user-defined characters
+        raise Big5Error("The code 0x%x for '%s' is reserved for user-defined "
+                         "characters" % (i, s))
+
+    else:
+        raise Big5Error("The code 0x%x for '%s' is undefined in the Big5 spec"
+                         % (i, s))
+
+    return freq if freq > 0 else 0
 
 
 result = set()
@@ -103,12 +147,18 @@ with open("classic-frequency.txt", "w") as out_:
 # and Quick input methods on a well-known Operating System.
 #
 # Note that the frequency computed below is not directly the code of the
-# character in Big5. Instead it is the result of the following operation:
+# character in Big5. Instead, it is based on the following heuristic:
 #
-#     frequency = max_code - code(character)
+#     1. We are only interested in 3 zones of Big5:
+#         - Frequently used characters (from 0xa440 to 0xc67e)
+#         - Less frequently used characters (from 0xc940 to 0xf9d5)
+#         - Graphical characters (from 0xa140 to 0xa3bf)
+#     2. These 3 zones need to be prioritized in the order above
+#     3. Inside a zone, characters are ordered by their Big5 code (a smaller
+#        code leads to a bigger frequency)
 #
-# In the above, max_code is 65278 (0xfefe), which is the highest possible code
-# in Big5.
+# The Wikipedia page gives details about the compartmentalization of Big5:
+#     http://en.wikipedia.org/wiki/Big5#A_more_detailed_look_at_the_organization
 #
 # The below list is placed in the Public Domain
 
