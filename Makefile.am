@@ -138,6 +138,7 @@ EXTRA_DIST = \
 	freq-data/getcorpus.cpp \
 	freq-data/frequency.txt \
 	freq-data/classic-frequency.txt \
+	freq-data/get_classic_freq.py \
 	filter/tc.txt \
 	filter/sc.txt \
 	$(NULL)
